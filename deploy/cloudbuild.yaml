@@ -1,0 +1,43 @@
+steps:
+# 1. Build Frontend
+- name: 'node:20'
+  dir: 'frontend'
+  entrypoint: 'npm'
+  args: ['install']
+- name: 'node:20'
+  dir: 'frontend'
+  entrypoint: 'npm'
+  args: ['run', 'build']
+
+# 2. Copy static build to backend
+- name: 'ubuntu'
+  args: ['cp', '-r', 'frontend/dist', 'backend/static']
+
+# 3. Build Docker container
+- name: 'gcr.io/cloud-builders/docker'
+  dir: 'backend'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/vision-tutor-repo/vision-tutor:$COMMIT_SHA', '.']
+
+# 4. Push to Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/vision-tutor-repo/vision-tutor:$COMMIT_SHA']
+
+# 5. Deploy to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+    - 'run'
+    - 'deploy'
+    - 'vision-tutor'
+    - '--image'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/vision-tutor-repo/vision-tutor:$COMMIT_SHA'
+    - '--region'
+    - 'us-central1'
+    - '--platform'
+    - 'managed'
+    - '--allow-unauthenticated'
+    - '--set-env-vars'
+    - 'ENV=production'
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/vision-tutor-repo/vision-tutor:$COMMIT_SHA'

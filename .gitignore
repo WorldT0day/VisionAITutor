@@ -1,0 +1,18 @@
+# Secrets & credentials
+.env
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# Node
+node_modules/
