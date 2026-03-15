@@ -2,12 +2,6 @@
 
 VisionTutor is a multimodal real-time AI Tutor web application where a child points their phone or laptop camera at homework, and an AI agent reads the question, explains it verbally using a conversational tone, generates educational diagrams on-the-fly, gives step-by-step hints, and automatically tracks the student's progress over time.
 
-## Demo Video
-[Link to Demo Video](#) *(Placeholder)*
-
-## Architecture Diagram
-![Architecture Diagram](./docs/architecture-diagram.png) *(Placeholder)*
-
 ## Features
 1. **User Authentication (Firebase Auth)**: Secure email and password signup flows saving profile data directly to Cloud Firestore.
 2. **Real-Time Camera Feed (WebRTC)**: Automatically captures frames from the user's camera to enable the AI's Vision capabilities.
